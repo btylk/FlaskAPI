@@ -79,8 +79,8 @@ def test_post():
 				'Polarity': polarity,
 				'Sentiment': sentiments,
 				'Announcement': announcement,
-				'All word': all_word,
-				'Word found': find,
+				'All_word': all_word,
+				'Word_found': find,
 				'Percent': result
 				
 			}
