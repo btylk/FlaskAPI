@@ -24,7 +24,7 @@ def test_post():
 		# url = input_value
 		req = request.get_json()
 		url = req['data']
-		with codecs.open('bully_word.txt','r','utf-8') as corpus:
+		with codecs.open('bully_word.txt','r','utf-8') as corpus, codecs.open('bully.txt','r','utf-8') as bully, codecs.open('depression.txt','r','utf-8') as depress:
 			# # url = req*5
 			# # url = data
 			res = requests.get(url)
@@ -40,6 +40,7 @@ def test_post():
 					p_list.append(obj)
 			else:
 				None
+
 			#sentiment
 			url = "https://api.aiforthai.in.th/ssense"
 			text = title
@@ -59,19 +60,48 @@ def test_post():
 			web_data = word_tokenize(sentence, engine="newmm",keep_whitespace=False)
 			all_word = len(web_data)
 
+			##read corpus 
 			lines_corpus = corpus.readlines()
 			tokens_column_number = 0
 			word_corpus=[]
 			for x in lines_corpus:
 				word_corpus.append(x.split()[tokens_column_number])
-				
+			
+			##read bully
+			lines_bully = bully.readlines()
+			word_bully=[]
+			for y in lines_bully:
+				word_bully.append(y.split()[0])
+
+			##read depress
+			lines_depress = depress.readlines()
+			word_depress=[]
+			for z in lines_depress:
+				word_depress.append(z.split()[0])
+
+			##find 
 			find = []
 			for i in word_corpus:
 				if i in web_data:
 					find.append(i)
 			all_find = len(find) 
 
-			result = float((all_find/all_word)*100)       
+			##find bully
+			find_bully = []
+			for i in word_bully:
+				if i in web_data:
+					find_bully.append(i)
+			all_bully = len(find_bully)
+
+			##find depress
+			find_depess = []
+			for i in word_depress:
+				if i in web_data:
+					find_depess.append(i)
+			all_depress = len(find_depess)
+
+
+			result = float(((all_bully + all_depress)/all_word)*100)       
 			data = {
 				'Title': title,
 				# 'H2': h2,
@@ -81,6 +111,8 @@ def test_post():
 				'Announcement': announcement,
 				'All_word': all_word,
 				'Word_found': find,
+				'Bully_found': find_bully,
+				'Depress_found': find_depess,
 				'Percent': result
 				
 			}
