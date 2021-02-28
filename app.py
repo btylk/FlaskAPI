@@ -24,7 +24,7 @@ def test_post():
 		# url = input_value
 		req = request.get_json()
 		url = req['data']
-		with codecs.open('bully_word.txt','r','utf-8') as corpus, codecs.open('bully.txt','r','utf-8') as bully, codecs.open('depression.txt','r','utf-8') as depress:
+		with codecs.open('bully.txt','r','utf-8') as bully, codecs.open('depress.txt','r','utf-8') as depress:
 			# # url = req*5
 			# # url = data
 			res = requests.get(url)
@@ -60,12 +60,12 @@ def test_post():
 			web_data = word_tokenize(sentence, engine="newmm",keep_whitespace=False)
 			all_word = len(web_data)
 
-			##read corpus 
-			lines_corpus = corpus.readlines()
-			tokens_column_number = 0
-			word_corpus=[]
-			for x in lines_corpus:
-				word_corpus.append(x.split()[tokens_column_number])
+			# ##read corpus 
+			# lines_corpus = corpus.readlines()
+			# tokens_column_number = 0
+			# word_corpus=[]
+			# for x in lines_corpus:
+			# 	word_corpus.append(x.split()[tokens_column_number])
 			
 			##read bully
 			lines_bully = bully.readlines()
@@ -79,12 +79,12 @@ def test_post():
 			for z in lines_depress:
 				word_depress.append(z.split()[0])
 
-			##find 
-			find = []
-			for i in word_corpus:
-				if i in web_data:
-					find.append(i)
-			all_find = len(find) 
+			# ##find 
+			# find = []
+			# for i in word_corpus:
+			# 	if i in web_data:
+			# 		find.append(i)
+			# all_find = len(find) 
 
 			##find bully
 			find_bully = []
@@ -110,7 +110,7 @@ def test_post():
 				'Sentiment': sentiments,
 				'Announcement': announcement,
 				'All_word': all_word,
-				'Word_found': find,
+				# 'Word_found': find,
 				'Bully_found': find_bully,
 				'Depress_found': find_depess,
 				'Percent': result
