@@ -24,7 +24,7 @@ def test_post():
 		# url = input_value
 		req = request.get_json()
 		url = req['data']
-		with codecs.open('bully.txt','r','utf-8') as bully, codecs.open('depress.txt','r','utf-8') as depress:
+		with codecs.open('bully.txt','r','utf-8') as bully, codecs.open('depress.txt','r','utf-8') as depress, codecs.open('desolate.txt','r','utf-8') as desolate:
 			# # url = req*5
 			# # url = data
 			res = requests.get(url)
@@ -70,14 +70,20 @@ def test_post():
 			##read bully
 			lines_bully = bully.readlines()
 			word_bully=[]
-			for y in lines_bully:
-				word_bully.append(y.split()[0])
+			for x in lines_bully:
+				word_bully.append(x.split()[0])
 
 			##read depress
 			lines_depress = depress.readlines()
 			word_depress=[]
-			for z in lines_depress:
-				word_depress.append(z.split()[0])
+			for y in lines_depress:
+				word_depress.append(y.split()[0])
+			
+			##read desolate
+			lines_desolate = desolate.readlines()
+			word_desolate=[]
+			for z in lines_desolate:
+				word_desolate.append(z.split()[0])
 
 			# ##find 
 			# find = []
@@ -100,8 +106,16 @@ def test_post():
 					find_depess.append(i)
 			all_depress = len(find_depess)
 
+			##find desolate
+			find_desolate = []
+			for i in word_desolate:
+				if i in web_data:
+					find_desolate.append(i)
+			all_desolate = len(find_desolate)
 
-			result = float(((all_bully + all_depress)/all_word)*100)       
+
+			result = round(float(((all_bully + all_depress + all_desolate)/all_word)*100),2)  
+			word_left = (100 - result)
 			data = {
 				'Title': title,
 				# 'H2': h2,
@@ -113,9 +127,25 @@ def test_post():
 				# 'Word_found': find,
 				'Bully_found': find_bully,
 				'Depress_found': find_depess,
-				'Percent': result
+				'Desolate_found': find_desolate,
+				'Other_person': {
+					'Bully_found': find_bully,
+					'All_bully': all_bully
+				},
+				'Itself': {
+					'Depress_found': find_depess,
+					'All_depress': all_depress,
+					'Desolate_found': find_desolate,
+					'All_desolate': all_desolate
+				},
+				'Percent_found': result,
+				'Percent_left': word_left
 				
 			}
+			# if all_bully != 0:
+			# 	update_bully = {'Bully_found' : find_bully}
+			# 	data.update(update_bully)
+
 		return jsonify(data)
 		# return jsonify(req)
 	if request.method == 'GET':
