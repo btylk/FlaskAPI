@@ -113,7 +113,9 @@ def test_post():
 					find_desolate.append(i)
 			all_desolate = len(find_desolate)
 
-
+			percent_bully = round(float(((all_bully)/all_word)*100),2)
+			percent_depress = round(float(((all_depress)/all_word)*100),2)
+			percent_desolate = round(float(((all_desolate)/all_word)*100),2)
 			result = round(float(((all_bully + all_depress + all_desolate)/all_word)*100),2)  
 			word_left = (100 - result)
 			data = {
@@ -139,7 +141,10 @@ def test_post():
 					'All_desolate': all_desolate
 				},
 				'Percent_found': result,
-				'Percent_left': word_left
+				'Percent_left': word_left,
+				'Percent_bully': percent_bully,
+				'Percent_depress': percent_depress,
+				'Percent_desolate': percent_desolate
 				
 			}
 			# if all_bully != 0:
@@ -170,4 +175,4 @@ def test_post():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
